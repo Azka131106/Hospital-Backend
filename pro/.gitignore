@@ -1,25 +1,16 @@
-# Node
+# Ignore node dependencies
 node_modules/
 
 # Environment variables
 .env
 
 # Logs
-logs
 *.log
-npm-debug.log*
+logs/
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# VS Code
+# VS Code settings
 .vscode/
-
-# Build / cache
-dist/
-build/
-
-# Temporary files
-*.tmp
-*.temp

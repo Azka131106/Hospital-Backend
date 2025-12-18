@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab Report - <%= report.patientName %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* AKS Brand Colors */
+            --navy: #1a3236;
+            --teal: #2d7a75;
+            --light-teal: #e0f2f1;
+            --white: #ffffff;
+            --gold: #c5a059;
+            --stamp-ink: #294052; /* Dark Blue Ink for Stamp */
+        }
+
+        body {
+            background: #dce4e4;
+            font-family: 'Source Serif 4', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pad-container {
+            width: 900px;
+            min-height: 1100px;
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        .pad-header {
+            background: var(--navy);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .hospital-info h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hospital-info p {
+            margin: 5px 0 0 0;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .doctor-info { text-align: right; }
+        .doctor-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin: 0; color: var(--gold); }
+        .doctor-info p { margin: 5px 0 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+        /* --- PATIENT STRIP --- */
+        .patient-strip {
+            background: var(--navy);
+            color: white;
+            padding: 10px 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .patient-strip span { border-bottom: 1px dotted rgba(255,255,255,0.5); padding-bottom: 2px; min-width: 50px; display: inline-block; text-align: center; }
+
+        /* --- BODY --- */
+        .pad-body { flex: 1; display: flex; position: relative; }
+
+        /* --- SIDEBAR (NOTES) --- */
+        .sidebar {
+            width: 28%; /* Slightly wider for notes */
+            background: var(--light-teal);
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            color: var(--navy);
+            font-family: 'Source Serif 4', serif;
+            border-right: 2px solid rgba(0,0,0,0.05);
+        }
+
+        .sidebar-section { margin-bottom: 10px; }
+        
+        .sidebar-label {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--navy);
+            border-bottom: 2px solid var(--teal);
+            display: inline-block;
+        }
+
+        .sidebar-text {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #333;
+            font-style: italic;
+            white-space: pre-line; /* Preserves line breaks from input */
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { width: 72%; padding: 40px; position: relative; }
+
+        .rx-symbol {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; height: 400px;
+            opacity: 0.05; pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 200px; color: var(--teal); font-weight: bold; z-index: 0;
+        }
+
+        /* --- TABLE --- */
+        .results-table {
+            width: 100%; border-collapse: collapse; font-size: 0.9rem; position: relative; z-index: 2;
+        }
+        .results-table th { text-align: left; border-bottom: 2px solid var(--navy); padding: 8px; color: var(--navy); font-family: 'Playfair Display', serif; }
+        .results-table td { padding: 10px 8px; border-bottom: 1px solid #eee; color: #333; }
+        .results-table tr:last-child td { border-bottom: none; }
+
+        /* --- REALISTIC STAMP SIGNATURE --- */
+        .signature-area {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            transform: rotate(-2deg); /* Organic tilt */
+        }
+
+        .stamp-box {
+            border: 3px double var(--stamp-ink);
+            border-radius: 12px;
+            padding: 10px 20px;
+            text-align: center;
+            color: var(--stamp-ink);
+            opacity: 0.85; /* Ink transparency */
+            width: 180px;
+        }
+
+        .stamp-header {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--stamp-ink);
+            margin-bottom: 5px;
+            padding-bottom: 2px;
+        }
+
+        .stamp-sig {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            margin: 5px 0;
+        }
+
+        .stamp-footer {
+            font-size: 0.6rem;
+            font-weight: 600;
+            border-top: 1px solid var(--stamp-ink);
+            padding-top: 2px;
+            margin-top: 2px;
+        }
+
+        /* --- FOOTER --- */
+        .pad-footer { height: 40px; background: var(--navy); position: relative; }
+        .pad-footer::after {
+            content: ""; position: absolute; top: 0; right: 100px;
+            width: 50px; height: 100%; background: rgba(255,255,255,0.1);
+            transform: skewX(-20deg);
+        }
+    </style>
+</head>
+<body>
+
+<div class="pad-container">
+    
+    <header class="pad-header">
+        <div class="hospital-info">
+            <h1>AKS Hospital</h1>
+            <p>Where Health Meets Excellence<br>56 Main Road,NESPAK Society P1, LHR, Pakistan</p>
+        </div>
+        <div class="doctor-info">
+            <h2>Dr. <%= report.doctorName %></h2>
+            <p>Senior Pathologist<br>Lic: 987654-NY</p>
+        </div>
+    </header>
+
+    <div class="patient-strip">
+        <div>Name: <span><%= report.patientName %></span></div>
+        <div>Age: <span><%= patientAge %></span></div>
+        <div>ID: <span><%= report.patient_id %></span></div>
+        <div>Gender: <span><%= report.gender  %></span></div>
+        <div>Date: <span><%= dateReported %></span></div>
+    </div>
+
+    <div class="pad-body">
+        
+        <aside class="sidebar">
+            
+            <div class="sidebar-section">
+                <div class="sidebar-label">O/E (On Exam):</div>
+                <div class="sidebar-text">
+                    BP: 120/80 mmHg<br>
+                    Pulse: 72 bpm<br>
+                    Temp: 98.6°F<br>
+                    Chest: Clear b/l<br>
+                    Abd: Soft, Non-tender
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Investigation / Rx:</div>
+                <div class="sidebar-text" style="color:var(--teal); font-weight:600;">
+                    <%= report.diagnosis ? report.diagnosis : "No specific remarks provided." %>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+            <div class="watermark">AKS</div>
+            <div class="rx-symbol">Rx</div>
+
+            <h3 style="color: var(--navy); font-family:'Playfair Display'; margin-top:0;"><%= displayTestName %></h3>
+
+            <table class="results-table">
+                <thead>
+                    <tr><th>Parameter</th><th>Result</th><th>Unit</th><th>Ref. Range</th></tr>
+                </thead>
+                <tbody>
+                    <% if (generatedResults && generatedResults.length > 0) { %>
+                        <% generatedResults.forEach(function(item) { %>
+                        <tr>
+                            <td><%= item.name %></td>
+                            <td style="font-weight:bold; color:var(--navy);"><%= item.value %></td>
+                            <td><%= item.unit %></td>
+                            <td style="font-size:0.85em; color:#666;"><%= item.reference %></td>
+                        </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr><td>Hemoglobin</td><td><b>13.5</b></td><td>g/dL</td><td>12.0 - 16.0</td></tr>
+                        <tr><td>RBC</td><td><b>4.8</b></td><td>mil/µL</td><td>4.0 - 5.5</td></tr>
+                        <tr><td>WBC</td><td><b>7.2</b></td><td>×10³/µL</td><td>4.5 - 11.0</td></tr>
+                        <tr><td>Platelets</td><td><b>250</b></td><td>×10³/µL</td><td>150 - 450</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+
+            <div style="margin-top: 40px; font-size: 0.9rem; color: #555;">
+                <strong>Comments:</strong> Test results are within normal biological reference ranges. Correlate clinically.
+            </div>
+
+            <div class="signature-area">
+                <div class="stamp-box">
+                    <div class="stamp-header">VERIFIED BY</div>
+                    <div class="stamp-sig">AKS Labs</div> <div class="stamp-footer">
+                        Dr. <%= report.doctorName.split(' ')[0] %><br>
+                        Reg: 44589-MD
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer class="pad-footer"></footer>
+</div>
+
+</body>
+</html>
